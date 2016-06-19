@@ -116,7 +116,7 @@ public class ForecastFragment extends Fragment {
 
             try {
                 // url to be used in the GET request
-                URL url = new URL("https://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7&appid=" + apiKey);
                 // open connection to the URL
                 urlConnection = (HttpURLConnection) url.openConnection();
                 // specify the type of request
@@ -145,6 +145,8 @@ public class ForecastFragment extends Fragment {
                 }
                 // convert the buffer's contents to string format
                 forecastJsonStr = buffer.toString();
+                // log the data to verify that it's correct
+                Log.v(LOG_TAG, "Forecast JSON string: " + forecastJsonStr);
             } catch (IOException e) {
                 // log the error
                 Log.e(LOG_TAG, "Error ", e);
