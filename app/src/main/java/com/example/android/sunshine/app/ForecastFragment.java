@@ -311,5 +311,13 @@ public class ForecastFragment extends Fragment {
 
             return null;
         }
+
+        @Override
+        protected void onPostExecute(String[] strings) {
+            super.onPostExecute(strings);
+
+            mForecastAdapter.clear();
+            mForecastAdapter.addAll(strings);
+        }
     }
 }
