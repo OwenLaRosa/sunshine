@@ -114,6 +114,10 @@ public class ForecastFragment extends Fragment {
         weatherTask.execute(location);
     }
 
+    private double celsiusToFahrenheit(Double temperature) {
+        return temperature * 1.8 + 32;
+    }
+
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
         private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
@@ -134,6 +138,15 @@ public class ForecastFragment extends Fragment {
          * Prepare the weather high/lows for presentation.
          */
         private String formatHighLows(double high, double low) {
+            // convert to Fahrenheit if applicable
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String units = sharedPreferences.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_default));
+            if (units != getString(R.string.pref_units_default)) {
+                // convert units to Fahrenheit
+                high = celsiusToFahrenheit(high);
+                low = celsiusToFahrenheit(low);
+            }
+
             // For presentation, assume the user doesn't care about tenths of a degree.
             long roundedHigh = Math.round(high);
             long roundedLow = Math.round(low);

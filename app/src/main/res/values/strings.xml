@@ -12,5 +12,10 @@
     <string name="pref_location_label">Location</string>
     <string name="pref_location_default"
         translatable="false">94043</string>
+    <string name="pref_units_key"
+        translatable="false">units</string>
+    <string name="pref_units_label">Temperature Scale</string>
+    <string name="pref_units_default"
+        translatable="false">Celsius</string>
 
 </resources>

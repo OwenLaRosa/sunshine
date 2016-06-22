@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="pref_units_entries">
+        <item>Celsius</item>
+        <item>Fahrenheit</item>
+    </array>
+
+</resources>
