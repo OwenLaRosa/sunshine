@@ -18,5 +18,6 @@
     <string name="pref_units_default"
         translatable="false">Celsius</string>
     <string name="action_map">View Location</string>
+    <string name="action_share">Share</string>
 
 </resources>
