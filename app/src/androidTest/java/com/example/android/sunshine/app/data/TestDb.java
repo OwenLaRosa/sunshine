@@ -15,6 +15,7 @@
  */
 package com.example.android.sunshine.app.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
@@ -110,24 +111,38 @@ public class TestDb extends AndroidTestCase {
         where you can uncomment out the "createNorthPoleLocationValues" function.  You can
         also make use of the ValidateCurrentRecord function from within TestUtilities.
     */
-    public void testLocationTable() {
+    public Long testLocationTable() {
         // First step: Get reference to writable database
+        SQLiteDatabase db = new WeatherDbHelper(this.mContext).getWritableDatabase();
 
         // Create ContentValues of what you want to insert
         // (you can use the createNorthPoleLocationValues if you wish)
 
+        ContentValues contentValues = TestUtilities.createNorthPoleLocationValues();
+
         // Insert ContentValues into database and get a row ID back
+        Long rowId = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, contentValues);
+        // check for insertion error
+        assertTrue("Failed to insert content. Row ID is -1.", rowId != -1);
 
         // Query the database and receive a Cursor back
+        // pass null as parameters, we want the entire table
+        Cursor cursor = db.query(WeatherContract.LocationEntry.TABLE_NAME, null, null, null, null, null, null);
 
         // Move the cursor to a valid database row
+        // check to see if the query returned any results
+        assertTrue("Query returned 0 results.", cursor.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
         // (you can use the validateCurrentRecord function in TestUtilities to validate the
         // query if you like)
+        TestUtilities.validateCurrentRecord("Validation failed for location qyery", cursor, contentValues);
 
         // Finally, close the cursor and database
+        cursor.close();
+        db.close();
 
+        return rowId;
     }
 
     /*
