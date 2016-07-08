@@ -101,7 +101,7 @@ public class TestProvider extends AndroidTestCase {
         you have implemented delete functionality there.
      */
     public void deleteAllRecords() {
-        deleteAllRecordsFromDB();
+        deleteAllRecordsFromProvider();
     }
 
     // Since we want each test to start with a clean slate, run deleteAllRecords
