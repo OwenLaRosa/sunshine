@@ -126,7 +126,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
         } else {
             ContentValues contentValues = new ContentValues();
 
-            contentValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, cityName);
+            contentValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
             contentValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
             contentValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
             contentValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
