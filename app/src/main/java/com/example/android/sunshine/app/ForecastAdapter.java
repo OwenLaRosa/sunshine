@@ -6,6 +6,8 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.android.sunshine.app.data.WeatherContract;
 
@@ -65,7 +67,26 @@ public class ForecastAdapter extends CursorAdapter {
         // our view is pretty simple here --- just a text view
         // we'll keep the UI functional with a simple (and slow!) binding.
 
-        //TextView tv = (TextView)view;
-        //tv.setText(convertCursorRowToUXFormat(cursor));
+        int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
+        String description = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
+        long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
+        double high = cursor.getDouble(ForecastFragment.COL_WEATHER_MAX_TEMP);
+        double low = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
+        boolean isMetric = Utility.isMetric(context);
+
+        ImageView iconImageView = (ImageView) view.findViewById(R.id.list_item_icon);
+        iconImageView.setImageResource(R.drawable.ic_launcher);
+
+        TextView forecastTextView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
+        forecastTextView.setText(description);
+
+        TextView dateTextView = (TextView) view.findViewById(R.id.list_item_date_textview);
+        dateTextView.setText(Utility.getFriendlyDayString(context, date));
+
+        TextView highTextView = (TextView) view.findViewById(R.id.list_item_high_textview);
+        highTextView.setText(Utility.formatTemperature(high, isMetric));
+
+        TextView lowTextView = (TextView) view.findViewById(R.id.list_item_low_textview);
+        lowTextView.setText(Utility.formatTemperature(low, isMetric));
     }
 }
