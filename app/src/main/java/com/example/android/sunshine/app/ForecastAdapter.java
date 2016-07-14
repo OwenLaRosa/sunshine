@@ -73,6 +73,8 @@ public class ForecastAdapter extends CursorAdapter {
         int layoutId = (viewType == VIEW_TYPE_TODAY) ? R.layout.list_item_forecast_today : R.layout.list_item_forecast;
 
         View view = LayoutInflater.from(context).inflate(layoutId, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        view.setTag(viewHolder);
 
         return view;
     }
@@ -85,6 +87,8 @@ public class ForecastAdapter extends CursorAdapter {
         // our view is pretty simple here --- just a text view
         // we'll keep the UI functional with a simple (and slow!) binding.
 
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
+
         int weatherId = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
         String description = cursor.getString(ForecastFragment.COL_WEATHER_DESC);
         long date = cursor.getLong(ForecastFragment.COL_WEATHER_DATE);
@@ -92,19 +96,31 @@ public class ForecastAdapter extends CursorAdapter {
         double low = cursor.getDouble(ForecastFragment.COL_WEATHER_MIN_TEMP);
         boolean isMetric = Utility.isMetric(context);
 
-        ImageView iconImageView = (ImageView) view.findViewById(R.id.list_item_icon);
-        iconImageView.setImageResource(R.drawable.ic_launcher);
+        viewHolder.iconView.setImageResource(R.drawable.ic_launcher);
 
-        TextView forecastTextView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
-        forecastTextView.setText(description);
+        viewHolder.descriptionView.setText(description);
 
-        TextView dateTextView = (TextView) view.findViewById(R.id.list_item_date_textview);
-        dateTextView.setText(Utility.getFriendlyDayString(context, date));
+        viewHolder.dateView.setText(Utility.getFriendlyDayString(context, date));
 
-        TextView highTextView = (TextView) view.findViewById(R.id.list_item_high_textview);
-        highTextView.setText(Utility.formatTemperature(high, isMetric));
+        viewHolder.highTempView.setText(Utility.formatTemperature(high, isMetric));
 
-        TextView lowTextView = (TextView) view.findViewById(R.id.list_item_low_textview);
-        lowTextView.setText(Utility.formatTemperature(low, isMetric));
+        viewHolder.lowTempView.setText(Utility.formatTemperature(low, isMetric));
     }
+
+    public static class ViewHolder {
+        public final ImageView iconView;
+        public final TextView dateView;
+        public final TextView descriptionView;
+        public final TextView highTempView;
+        public final TextView lowTempView;
+
+        public ViewHolder(View view) {
+            iconView = (ImageView) view.findViewById(R.id.list_item_icon);
+            dateView = (TextView) view.findViewById(R.id.list_item_date_textview);
+            descriptionView = (TextView) view.findViewById(R.id.list_item_forecast_textview);
+            highTempView = (TextView) view.findViewById(R.id.list_item_high_textview);
+            lowTempView = (TextView) view.findViewById(R.id.list_item_low_textview);
+        }
+    }
+
 }
