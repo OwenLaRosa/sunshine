@@ -62,6 +62,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private ShareActionProvider mShareActionProvider;
 
+    TextView mDayTextView;
+    TextView mDateTextView;
+    TextView mHighTextView;
+    TextView mLowTextView;
+    ImageView mIconImageView;
+    TextView mHumidityTextView;
+    TextView mWindTextView;
+    TextView mPressureTextView;
+
     public DetailFragment() {
         setHasOptionsMenu(true);
     }
@@ -71,6 +80,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        mDayTextView = (TextView) rootView.findViewById(R.id.detail_day_textview);
+        mDateTextView = (TextView) rootView.findViewById(R.id.detail_date_textview);
+        mHighTextView = (TextView) rootView.findViewById(R.id.detail_high_textview);
+        mLowTextView = (TextView) rootView.findViewById(R.id.detail_low_textview);
+        mIconImageView = (ImageView) rootView.findViewById(R.id.detail_icon_imageview);
+        mHumidityTextView = (TextView) rootView.findViewById(R.id.detail_humidity_textview);
+        mWindTextView = (TextView) rootView.findViewById(R.id.detail_wind_textview);
+        mPressureTextView = (TextView) rootView.findViewById(R.id.detail_pressure_textview);
 
         return rootView;
     }
