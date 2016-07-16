@@ -145,6 +145,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         int windSpeed = data.getInt(COL_WEATHER_WIND_SPEED);
         int windDegrees = data.getInt(COL_WEATHER_DEGREES);
         float pressure = data.getFloat(COL_WEATHER_PRESSURE);
+        int condition = data.getInt(COL_WEATHER_CONDITION_ID);
 
         TextView dayTextView = (TextView) getView().findViewById(R.id.detail_day_textview);
         dayTextView.setText(Utility.getDayName(context, date));
@@ -158,7 +159,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         lowTextView.setText(Utility.formatTemperature(context, low, isMetric));
 
         ImageView imageView = (ImageView) getView().findViewById(R.id.detail_icon_imageview);
-        imageView.setImageResource(R.drawable.ic_launcher);
+        imageView.setImageResource(Utility.getArtResourceForWeatherCondition(condition));
 
         TextView descriptionTextView = (TextView) getView().findViewById(R.id.detail_description_textview);
         descriptionTextView.setText(description);
