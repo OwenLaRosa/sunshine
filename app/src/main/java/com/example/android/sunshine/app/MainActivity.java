@@ -3,10 +3,13 @@ package com.example.android.sunshine.app;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -15,18 +18,35 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
 
     private String mLocation;
+    private boolean mTwoPane;
 
-    private final String FORECASTFRAGMENT_TAG = "FFTAG";
+    private final String DETAILFRAGMENT_TAG = "DFTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        Log.v("", String.format("Screen is %d by %d", size.x, size.y));
         setContentView(R.layout.activity_main);
         mLocation = Utility.getPreferredLocation(this);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
-                    .commit();
+//        if (savedInstanceState == null) {
+//            getSupportFragmentManager().beginTransaction()
+//                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
+//                    .commit();
+//        }
+
+        if (findViewById(R.id.weather_detail_container) != null) {
+            mTwoPane = true;
+
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.weather_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
+                        .commit();
+            } else {
+                mTwoPane = false;
+            }
         }
     }
 
@@ -81,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
         if (newLocation != mLocation) {
             // setting has changed, alert the fragment
             ForecastFragment ff = (ForecastFragment) getSupportFragmentManager().
-                    findFragmentByTag(FORECASTFRAGMENT_TAG);
+                    findFragmentById(R.id.fragment_forecast);
             ff.onLocationChanged();
             mLocation = newLocation;
         }
