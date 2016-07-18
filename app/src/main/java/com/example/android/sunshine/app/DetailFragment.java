@@ -7,6 +7,7 @@ package com.example.android.sunshine.app;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -71,6 +72,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     TextView mWindTextView;
     TextView mPressureTextView;
 
+    static final String DETAIL_URI = "URI";
+
+    private Uri mUri;
+
     public DetailFragment() {
         setHasOptionsMenu(true);
     }
@@ -80,6 +85,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
+
+        Bundle arguments = getArguments();
+        if (null != arguments) {
+            mUri = arguments.getParcelable(DETAIL_URI);
+        }
 
         mDayTextView = (TextView) rootView.findViewById(R.id.detail_day_textview);
         mDateTextView = (TextView) rootView.findViewById(R.id.detail_date_textview);
@@ -123,11 +133,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Intent intent = getActivity().getIntent();
-        if (intent == null || intent.getData() == null) {
-            return null;
+        if (null != mUri) {
+            return new CursorLoader(getActivity(), mUri, FORECAST_COLUMNS, null, null, null);
         }
-        return new CursorLoader(getActivity(), intent.getData(), FORECAST_COLUMNS, null, null, null);
+        return null;
     }
 
     @Override
@@ -178,6 +187,16 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
 
+    }
+
+    void onLocationChanged(String newLocation) {
+        Uri uri = mUri;
+        if (null != uri) {
+            long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
+            Uri updatedUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
+            mUri = updatedUri;
+            getLoaderManager().restartLoader(LOADER_ID, null, this);
+        }
     }
 
 }

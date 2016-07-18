@@ -1,6 +1,5 @@
 package com.example.android.sunshine.app;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -33,6 +32,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private String apiKey = "83ca909b4cd38c2adeee23c2b697ca65";
 
     private static final int LOADER_ID = 0;
+
+    public interface Callback {
+        public void onItemSelected(Uri dateUri);
+    }
 
     // Column array and indices provided in the lesson
 
@@ -93,9 +96,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
                 if (cursor != null) {
                     String locationSetting = Utility.getPreferredLocation(getActivity());
-                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-                            .setData(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE)));
-                    startActivity(intent);
+                    ((Callback) getActivity())
+                            .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE)));
                 }
             }
         });

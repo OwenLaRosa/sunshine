@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
 
     private String mLocation;
     private boolean mTwoPane;
@@ -44,9 +44,9 @@ public class MainActivity extends ActionBarActivity {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.weather_detail_container, new DetailFragment(), DETAILFRAGMENT_TAG)
                         .commit();
-            } else {
-                mTwoPane = false;
             }
+        } else {
+            mTwoPane = false;
         }
     }
 
@@ -102,8 +102,33 @@ public class MainActivity extends ActionBarActivity {
             // setting has changed, alert the fragment
             ForecastFragment ff = (ForecastFragment) getSupportFragmentManager().
                     findFragmentById(R.id.fragment_forecast);
-            ff.onLocationChanged();
+            if (null != ff) {
+                ff.onLocationChanged();
+            }
+            DetailFragment df = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            if (null != df) {
+                df.onLocationChanged(newLocation);
+            }
             mLocation = newLocation;
+        }
+    }
+
+    @Override
+    public void onItemSelected(Uri dateUri) {
+        if (mTwoPane) {
+
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.DETAIL_URI, dateUri);
+
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+        } else {
+            Intent intent = new Intent(this, DetailActivity.class).setData(dateUri);
+            startActivity(intent);
         }
     }
 }
