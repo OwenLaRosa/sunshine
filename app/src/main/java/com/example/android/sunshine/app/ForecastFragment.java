@@ -36,7 +36,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private static final int LOADER_ID = 0;
     private static final String SELECTED_KEY = "selected";
 
-    private int mPosition;
+    private int mPosition = ListView.INVALID_POSITION;
 
     private boolean mUseTodayLayout = true;
 
@@ -107,6 +107,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     ((Callback) getActivity())
                             .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE)));
                 }
+                //mPosition = i;
             }
         });
 
@@ -120,6 +121,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        mPosition = mListView.getFirstVisiblePosition();
         if (mPosition != ListView.INVALID_POSITION) {
             outState.putInt(SELECTED_KEY, mPosition);
         }
@@ -184,7 +186,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         if (mPosition != ListView.INVALID_POSITION) {
             mListView.smoothScrollToPosition(mPosition);
-            mListView.setSelection(mPosition);
+            //mListView.setSelection(mPosition);
         }
     }
 
