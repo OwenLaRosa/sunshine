@@ -114,8 +114,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         if (savedInstanceState != null && savedInstanceState.containsKey(SELECTED_KEY)) {
             mPosition = savedInstanceState.getInt(SELECTED_KEY);
         }
-
-        updateWeather();
+        
         return rootView;
     }
 
