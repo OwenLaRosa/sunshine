@@ -22,9 +22,12 @@ public class ForecastAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
+    private boolean mUseTodayLayout;
+
     @Override
     public int getItemViewType(int position) {
-        return (position == 0) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+        if (!mUseTodayLayout) return VIEW_TYPE_FUTURE_DAY;
+        return  (position == 0) ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
     }
 
     @Override
@@ -95,6 +98,10 @@ public class ForecastAdapter extends CursorAdapter {
             highTempView = (TextView) view.findViewById(R.id.list_item_high_textview);
             lowTempView = (TextView) view.findViewById(R.id.list_item_low_textview);
         }
+    }
+
+    public void setUseTodayLayout(boolean flag) {
+        mUseTodayLayout = flag;
     }
 
 }

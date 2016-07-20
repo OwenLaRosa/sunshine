@@ -38,6 +38,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private int mPosition;
 
+    private boolean mUseTodayLayout = true;
+
     public interface Callback {
         public void onItemSelected(Uri dateUri);
     }
@@ -90,6 +92,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
+        mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
 
         mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
         mListView.setAdapter(mForecastAdapter);
@@ -193,6 +196,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLocationChanged() {
         updateWeather();
         getLoaderManager().restartLoader(LOADER_ID, null, this);
+    }
+
+    public void setUseTodayLayout(boolean flag) {
+        mUseTodayLayout = flag;
+        if (mForecastAdapter != null) {
+            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
+        }
     }
 
 }
