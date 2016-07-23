@@ -4,6 +4,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -185,8 +187,20 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
         if (mPosition != ListView.INVALID_POSITION) {
             mListView.smoothScrollToPosition(mPosition);
-            //mListView.setSelection(mPosition);
         }
+
+        // Requires handler to avoid error: http://stackoverflow.com/questions/22788684/can-not-perform-this-action-inside-of-onloadfinished/24962974
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                if (!mUseTodayLayout) {
+                    // select first item for two-pane layout
+                    mListView.performItemClick(mListView, 0, mListView.getItemIdAtPosition(0));
+                }
+            }
+        };
+        handler.sendEmptyMessage(0);
     }
 
     @Override
