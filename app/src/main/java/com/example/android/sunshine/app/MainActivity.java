@@ -124,7 +124,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
 
             DetailFragment oldDetail = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
 
-            if (oldDetail != null && oldDetail.mUri.toString().equals(dateUri.toString())) {
+            if (oldDetail != null && oldDetail.mUri != null && oldDetail.mUri.toString().equals(dateUri.toString())) {
                 // this detail view is currently being displayed, no need to relaunch
                 return;
             }
