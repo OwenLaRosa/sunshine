@@ -74,7 +74,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     static final String DETAIL_URI = "URI";
 
-    private Uri mUri;
+    public Uri mUri;
 
     public DetailFragment() {
         setHasOptionsMenu(true);

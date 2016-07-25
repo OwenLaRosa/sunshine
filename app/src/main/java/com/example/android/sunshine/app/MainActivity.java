@@ -122,6 +122,13 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     public void onItemSelected(Uri dateUri) {
         if (mTwoPane) {
 
+            DetailFragment oldDetail = (DetailFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+
+            if (oldDetail != null && oldDetail.mUri.toString().equals(dateUri.toString())) {
+                // this detail view is currently being displayed, no need to relaunch
+                return;
+            }
+
             Bundle args = new Bundle();
             args.putParcelable(DetailFragment.DETAIL_URI, dateUri);
 
