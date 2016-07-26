@@ -1,18 +1,16 @@
 package com.example.android.sunshine.app;
 
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,7 +20,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.android.sunshine.app.Service.SunshineService;
 import com.example.android.sunshine.app.data.WeatherContract;
+
+import static com.example.android.sunshine.app.Utility.getPreferredLocation;
 
 /**
  * Fragment that displays 7 day weather forecast
@@ -105,7 +106,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 Cursor cursor = (Cursor) adapterView.getItemAtPosition(i);
 
                 if (cursor != null) {
-                    String locationSetting = Utility.getPreferredLocation(getActivity());
+                    String locationSetting = getPreferredLocation(getActivity());
                     ((Callback) getActivity())
                             .onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(locationSetting, cursor.getLong(COL_WEATHER_DATE)));
                 }
@@ -156,13 +157,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     private void updateWeather() {
-
-        Log.d("", "update weather called");
-        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String location = sharedPreferences.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
-        weatherTask.execute(location);
+        Intent intent = new Intent(getActivity(), SunshineService.class);
+        String location = Utility.getPreferredLocation(getActivity());
+        intent.putExtra(SunshineService.LOCATION_QUERY_EXTRA, location);
+        getActivity().startService(intent);
     }
 
     private double celsiusToFahrenheit(Double temperature) {
@@ -171,7 +169,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        String location = Utility.getPreferredLocation(getActivity());
+        String location = getPreferredLocation(getActivity());
 
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(location, System.currentTimeMillis());
