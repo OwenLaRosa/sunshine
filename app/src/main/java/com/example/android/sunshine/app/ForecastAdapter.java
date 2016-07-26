@@ -74,6 +74,7 @@ public class ForecastAdapter extends CursorAdapter {
         } else {
             viewHolder.iconView.setImageResource(Utility.getIconResourceForWeatherCondition(condition));
         }
+        viewHolder.iconView.setContentDescription(description);
 
         viewHolder.descriptionView.setText(description);
 

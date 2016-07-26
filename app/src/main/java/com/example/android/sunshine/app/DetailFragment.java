@@ -169,6 +169,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
         ImageView imageView = (ImageView) getView().findViewById(R.id.detail_icon_imageview);
         imageView.setImageResource(Utility.getArtResourceForWeatherCondition(condition));
+        imageView.setContentDescription(description);
 
         TextView descriptionTextView = (TextView) getView().findViewById(R.id.detail_description_textview);
         descriptionTextView.setText(description);
