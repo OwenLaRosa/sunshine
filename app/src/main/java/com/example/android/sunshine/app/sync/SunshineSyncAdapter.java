@@ -16,7 +16,6 @@ import android.text.format.Time;
 import android.util.Log;
 
 import com.example.android.sunshine.app.R;
-import com.example.android.sunshine.app.Service.SunshineService;
 import com.example.android.sunshine.app.Utility;
 import com.example.android.sunshine.app.data.WeatherContract;
 
@@ -31,8 +30,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Vector;
-
-import static com.example.android.sunshine.app.Service.SunshineService.LOCATION_QUERY_EXTRA;
 
 public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = SunshineSyncAdapter.class.getSimpleName();
