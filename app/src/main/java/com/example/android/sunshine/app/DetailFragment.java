@@ -163,9 +163,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         dateTextView.setText(Utility.getFormattedMonthDay(context, date));
 
         TextView highTextView = (TextView) getView().findViewById(R.id.detail_high_textview);
-        highTextView.setText(Utility.formatTemperature(context, high, isMetric));
+        highTextView.setText(Utility.formatTemperature(context, high));
         TextView lowTextView = (TextView) getView().findViewById(R.id.detail_low_textview);
-        lowTextView.setText(Utility.formatTemperature(context, low, isMetric));
+        lowTextView.setText(Utility.formatTemperature(context, low));
 
         ImageView imageView = (ImageView) getView().findViewById(R.id.detail_icon_imageview);
         imageView.setImageResource(Utility.getArtResourceForWeatherCondition(condition));

@@ -80,9 +80,9 @@ public class ForecastAdapter extends CursorAdapter {
 
         viewHolder.dateView.setText(Utility.getFriendlyDayString(context, date));
 
-        viewHolder.highTempView.setText(Utility.formatTemperature(context, high, isMetric));
+        viewHolder.highTempView.setText(Utility.formatTemperature(context, high));
 
-        viewHolder.lowTempView.setText(Utility.formatTemperature(context, low, isMetric));
+        viewHolder.lowTempView.setText(Utility.formatTemperature(context, low));
     }
 
     public static class ViewHolder {
